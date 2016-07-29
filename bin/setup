@@ -5,4 +5,5 @@ set -vx
 
 bundle install
 
-# Do any other automated setup that you need to do here
+brew install wget
+npm install -g accesslint-cli

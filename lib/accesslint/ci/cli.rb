@@ -6,10 +6,14 @@ module Accesslint
       desc "scan HOST", "scan HOST"
       option :crawl, type: :boolean
       def scan(host)
-        master = LogManager.get.split("\n")
-        results = Scanner.perform(host: host, options: options).split("\n")
-        diff = results - master
-        puts diff
+        existing = LogManager.get.split("\n")
+        current = Scanner.perform(host: host, options: options).split("\n")
+        diff = current - existing
+
+        if diff.any?
+          Commenter.perform(diff)
+          puts diff
+        end
       end
     end
   end
