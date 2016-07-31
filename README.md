@@ -1,52 +1,43 @@
 # Accesslint::Ci
 
-Run accesslint-cli in CircleCI
+Runs accesslint-cli in CircleCI and comments on GitHub pull requests with new
+accessibility issues.
+
+accesslint-ci will crawl a host site and run accessibility assertions on the
+pages. If there are any new accessibility issues, accesslint-ci will comment on
+the pull request that initiated the build in CircleCI.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+1. Set up your CircleCI environment (API tokens for CircleCI and GitHub, artifacts)
+1. Install dependencies (nodejs, `accesslint-cli`, `accesslint-ci`)
+1. Start a development server
+1. Run `accesslint-ci scan <development server e.g. http://localhost:3000>`
 
-```ruby
-gem 'accesslint-ci'
+In your `circle.yml` file:
+
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install accesslint-ci
-
-## Usage
-
 general:
   artifacts:
     - "accesslint.log"
 
 machine:
+  environment:
+    CIRCLE_TOKEN: <CircleCI API token>
+    ACCESSLINT_GITHUB_TOKEN: <GitHub Personal Access Token>
   node:
     version: 6.1.0
 
 dependencies:
   override:
     - npm install -g accesslint-cli
+    - gem install accesslint-ci
 
 test:
   post:
-    - bundle exec puma -d -C./config/puma.rb
+    - bundle exec rails server
     - accesslint-ci scan http://localhost:3000
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/accesslint-ci.rb/accesslint-ci. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
+```
 
 ## License
 
