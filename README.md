@@ -24,6 +24,9 @@ general:
   artifacts:
     - "accesslint.log"
 
+machine:
+  node:
+    version: 6.1.0
 
 dependencies:
   override:
