@@ -66,6 +66,27 @@ module Accesslint
           expect(Commenter).not_to have_received(:perform)
         end
       end
+
+      context "when running on master" do
+        it "does not fetch logs or post a comment" do
+          original_branch = ENV["CIRCLE_BRANCH"]
+          ENV["CIRCLE_BRANCH"] = "master"
+          host = "http://example.com"
+          latest = "an error\n"
+          allow(Commenter).to receive(:perform)
+          allow(LogManager).to receive(:get)
+          allow(Scanner).to receive(:perform).
+            with(host: host, options: {}).
+            and_return(latest)
+
+          subject.scan(host)
+
+          expect(LogManager).not_to have_received(:get)
+          expect(Commenter).not_to have_received(:perform)
+
+          ENV["CIRCLE_BRANCH"] = original_branch
+        end
+      end
     end
   end
 end
