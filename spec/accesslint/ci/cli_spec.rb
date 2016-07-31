@@ -5,6 +5,8 @@ module Accesslint
     describe Cli do
       context "when there is a diff with new errors" do
         it "posts a comment with the diff" do
+          original_branch = ENV["CIRCLE_BRANCH"]
+          ENV["CIRCLE_BRANCH"] = "my-branch"
           host = "http://example.com"
           existing = "an error\n"
           latest = existing + "something new!\n"
@@ -22,11 +24,15 @@ module Accesslint
 
           expect(Commenter).to have_received(:perform).
             with(["something new!"])
+
+          ENV["CIRCLE_BRANCH"] = original_branch
         end
       end
 
       context "when there is a diff with fewer errors" do
         it "does not post a comment" do
+          original_branch = ENV["CIRCLE_BRANCH"]
+          ENV["CIRCLE_BRANCH"] = "my-branch"
           host = "http://example.com"
           existing = "'an error'\n'another error`\n"
           latest = "'an error'\n"
@@ -43,11 +49,15 @@ module Accesslint
           subject.scan(host)
 
           expect(Commenter).not_to have_received(:perform)
+
+          ENV["CIRCLE_BRANCH"] = original_branch
         end
       end
 
       context "when there is no diff" do
         it "does not post a comment" do
+          original_branch = ENV["CIRCLE_BRANCH"]
+          ENV["CIRCLE_BRANCH"] = "my-branch"
           host = "http://example.com"
           existing = "an error\n"
           latest = existing
@@ -64,6 +74,8 @@ module Accesslint
           subject.scan(host)
 
           expect(Commenter).not_to have_received(:perform)
+
+          ENV["CIRCLE_BRANCH"] = original_branch
         end
       end
 
