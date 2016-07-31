@@ -2,7 +2,7 @@ require "spec_helper"
 
 module Accesslint
   module Ci
-    describe CLI do
+    describe Cli do
       context "when there is a diff with new errors" do
         it "posts a comment with the diff" do
           host = "http://example.com"

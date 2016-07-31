@@ -2,7 +2,7 @@ require "thor"
 
 module Accesslint
   module Ci
-    class CLI < Thor
+    class Cli < Thor
       desc "scan HOST", "scan HOST"
       option :crawl, type: :boolean
       def scan(host)
