@@ -51,7 +51,7 @@ module Accesslint
             --quiet
 
           find #{SITE_DIR} -type f -name "*.html" | \
-            xargs -n 1 -P 5 accesslint >> #{LOG_FILE}
+            xargs -n 1 accesslint >> #{LOG_FILE}
         SHELL
       end
     end
