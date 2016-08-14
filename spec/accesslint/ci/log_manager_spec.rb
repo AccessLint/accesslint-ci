@@ -7,7 +7,7 @@ module Accesslint
         context "with existing logs from a master build" do
           it "returns the existing logs" do
             allow(RestClient).to receive(:get).
-              with("https://circleci.com/api/v1/project/accesslint/accesslint-ci.rb/latest/artifacts?branch=master&filter=successful&circle-token=ABC123").
+              with("https://circleci.com/api/v1/project/accesslint/accesslint-ci.rb/latest/artifacts/tmp/accesslint?branch=master&filter=successful&circle-token=ABC123").
               and_return([
                 path: "accesslint.log",
                 url: "https://example.com/accesslint.log",
@@ -26,7 +26,7 @@ module Accesslint
         context "with no existing logs" do
           it "returns a newline" do
             allow(RestClient).to receive(:get).
-              with("https://circleci.com/api/v1/project/accesslint/accesslint-ci.rb/latest/artifacts?branch=master&filter=successful&circle-token=ABC123").
+              with("https://circleci.com/api/v1/project/accesslint/accesslint-ci.rb/latest/artifacts/tmp/accesslint?branch=master&filter=successful&circle-token=ABC123").
               and_return([].to_json)
 
             log = LogManager.get

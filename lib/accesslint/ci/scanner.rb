@@ -3,9 +3,6 @@ require "fileutils"
 
 module Accesslint
   module Ci
-    SITE_DIR = "tmp/accesslint-site".freeze
-    LOG_FILE = "tmp/accesslint.log".freeze
-
     class Scanner
       def self.perform(*args)
         new(*args).perform
@@ -21,7 +18,7 @@ module Accesslint
         create_log_file
         `#{crawl_site}`
 
-        File.read(LOG_FILE)
+        File.read(LOG_PATH)
       end
 
       private
@@ -29,17 +26,16 @@ module Accesslint
       attr_reader :host, :options
 
       def create_site_dir
-        if !File.exists?(SITE_DIR)
-          FileUtils::mkdir_p(SITE_DIR)
+        if !File.exists?(SITE_PATH)
+          FileUtils::mkdir_p(SITE_PATH)
         end
       end
 
       def create_log_file
-        if File.exists?(LOG_FILE)
-          FileUtils::rm(LOG_FILE)
+        if File.exists?(LOG_PATH)
+          FileUtils::rm(LOG_PATH)
         end
       end
-
 
       def crawl_site
         <<-SHELL
@@ -47,11 +43,11 @@ module Accesslint
             --convert-links \
             --html-extension \
             --mirror \
-            --directory-prefix #{SITE_DIR} \
+            --directory-prefix #{SITE_PATH} \
             --quiet
 
-          find #{SITE_DIR} -type f -name "*.html" | \
-            xargs -n 1 accesslint >> #{LOG_FILE}
+          find #{SITE_PATH} -type f -name "*.html" | \
+            xargs -n 1 accesslint >> #{LOG_PATH}
         SHELL
       end
     end
