@@ -43,15 +43,13 @@ module Accesslint
 
       def crawl_site
         <<-SHELL
-          wget #{host} \
-            --convert-links \
-            --html-extension \
-            --mirror \
-            --directory-prefix #{SITE_DIR} \
-            --quiet
-
-          find #{SITE_DIR} -type f -name "*.html" | \
-            xargs -n 1 accesslint >> #{LOG_FILE}
+          wget #{host} 2>&1 \
+            --spider \
+            --recursive \
+            | grep '^--' \
+            | awk '{ print $3 }' \
+            | xargs -n1 accesslint \
+            >> #{LOG_FILE}
         SHELL
       end
     end
