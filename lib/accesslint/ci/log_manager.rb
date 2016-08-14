@@ -23,8 +23,8 @@ module Accesslint
       def artifact_url
         @artifacts = JSON.parse(RestClient.get("#{artifacts_uri}?#{query}"))
 
-        artifact = @artifacts.first do |artifact|
-          artifact["path"].end_with?("accesslint.log")
+        artifact = @artifacts.first do |result|
+          result["path"].end_with?(LOG_FILE)
         end
 
         if artifact
@@ -39,7 +39,8 @@ module Accesslint
           "https://circleci.com/",
           "api/v1/project/",
           project_path,
-          "latest/artifacts",
+          "latest/artifacts/",
+          ARTIFACTS_DIR
         )
       end
 

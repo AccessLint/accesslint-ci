@@ -1,4 +1,5 @@
 require "accesslint/ci/version"
+require "accesslint/ci/constants"
 require "accesslint/ci/cli"
 require "accesslint/ci/log_manager"
 require "accesslint/ci/commenter"

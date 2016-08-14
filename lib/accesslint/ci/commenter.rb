@@ -78,4 +78,3 @@ module Accesslint
     end
   end
 end
-
