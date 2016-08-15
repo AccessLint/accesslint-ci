@@ -48,6 +48,9 @@ module Accesslint
             --recursive \
             | grep '^--' \
             | awk '{ print $3 }' \
+            | grep -v '\.\(css\|js\|png\|gif\|jpg\|svg\|ico\|txt\|woff\)$' \
+            | sort \
+            | uniq \
             | xargs -n1 accesslint \
             >> #{LOG_FILE}
         SHELL
