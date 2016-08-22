@@ -7,6 +7,8 @@ accesslint-ci will crawl a host site and run accessibility assertions on the
 pages. If there are any new accessibility issues, accesslint-ci will comment on
 the pull request that initiated the build in CircleCI.
 
+[View an example](https://github.com/accesslint/bourbon.io/pull/1)
+
 ## Installation
 
 1. Set up your CircleCI environment (API tokens for CircleCI and GitHub, artifacts)
