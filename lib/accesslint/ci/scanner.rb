@@ -46,9 +46,9 @@ module Accesslint
           wget #{host} 2>&1 \
             --spider \
             --recursive \
+            --reject css,png,gif,jpg,jpeg,svg,ico,txt,woff \
             | grep '^--' \
             | awk '{ print $3 }' \
-            | grep -v '\.\(css\|js\|png\|gif\|jpg\|svg\|ico\|txt\|woff\)$' \
             | sort \
             | uniq \
             | xargs -n1 accesslint \
