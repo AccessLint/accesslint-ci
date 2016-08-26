@@ -21,7 +21,7 @@ In your `circle.yml` file:
 ```
 general:
   artifacts:
-    - "accesslint.log"
+    - "tmp"
 
 machine:
   environment:
