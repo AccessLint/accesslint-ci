@@ -47,6 +47,7 @@ module Accesslint
             --spider \
             --recursive \
             --reject css,png,gif,jpg,jpeg,svg,ico,txt,woff \
+            -erobots=off \
             | grep '^--' \
             | awk '{ print $3 }' \
             | sort \
