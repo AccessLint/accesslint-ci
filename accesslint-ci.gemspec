@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Run accessibility tests in CircleCI builds}
   spec.description   = %q{accesslint-ci runs accessibility tests in CircleCI and comments on corresponding GitHub pull requests}
-  spec.homepage      = "https://www.github.com/accesslint/accesslint-ci.rb"
+  spec.homepage      = "https://www.github.com/accesslint/accesslint-ci"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

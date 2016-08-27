@@ -5,17 +5,17 @@ module Accesslint
     describe Commenter do
       it "posts a comment to GitHub" do
         original_pull_request = ENV["CI_PULL_REQUEST"]
-        ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci.rb/pull/9001"
+        ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci/pull/9001"
 
         allow(RestClient).to receive(:get).
-          with("https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci.rb/pulls?head=accesslint:#{ENV.fetch('CIRCLE_BRANCH')}").
+          with("https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci/pulls?head=accesslint:#{ENV.fetch('CIRCLE_BRANCH')}").
           and_return([ { number: 1 } ].to_json)
         allow(RestClient).to receive(:post)
 
         Commenter.perform(["my diff"])
 
         expect(RestClient).to have_received(:post).with(
-          "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci.rb/issues/9001/comments",
+          "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci/issues/9001/comments",
           { body: "Found 1 new accessibility issues: \n```\nmy diff\n```" }.to_json
         )
 
@@ -25,13 +25,13 @@ module Accesslint
       context "when CI_PULL_REQUEST is set" do
         it "uses the number from CI_PULL_REQUEST" do
           original_pull_request = ENV["CI_PULL_REQUEST"]
-          ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci.rb/pull/9001"
+          ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci/pull/9001"
           allow(RestClient).to receive(:post)
 
           Commenter.perform(["my diff"])
 
           expect(RestClient).to have_received(:post).with(
-            "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci.rb/issues/9001/comments",
+            "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci/issues/9001/comments",
             { body: "Found 1 new accessibility issues: \n```\nmy diff\n```" }.to_json
           )
 
@@ -42,13 +42,13 @@ module Accesslint
       context "when running on master" do
         it "uses the number from CI_PULL_REQUEST" do
           original_pull_request = ENV["CI_PULL_REQUEST"]
-          ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci.rb/pull/9001"
+          ENV["CI_PULL_REQUEST"] = "https://github.com/accesslint/accesslint-ci/pull/9001"
           allow(RestClient).to receive(:post)
 
           Commenter.perform(["my diff"])
 
           expect(RestClient).to have_received(:post).with(
-            "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci.rb/issues/9001/comments",
+            "https://accesslint-ci:ABC456@api.github.com/repos/accesslint/accesslint-ci/issues/9001/comments",
             { body: "Found 1 new accessibility issues: \n```\nmy diff\n```" }.to_json
           )
 
