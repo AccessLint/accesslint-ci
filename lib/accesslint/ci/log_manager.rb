@@ -59,7 +59,7 @@ module Accesslint
       end
 
       def branch
-        "master"
+        ENV.fetch("ACCESSLINT_MASTER_BRANCH", "master")
       end
     end
   end
