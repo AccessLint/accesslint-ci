@@ -40,13 +40,12 @@ module Accesslint
         end
       end
 
-
       def crawl_site
         <<-SHELL
           wget #{host} 2>&1 \
             --spider \
             --recursive \
-            --reject css,png,gif,jpg,jpeg,svg,ico,txt,woff \
+            --reject #{file_types_to_ignore} \
             -erobots=off \
             | grep '^--' \
             | awk '{ print $3 }' \
@@ -55,6 +54,21 @@ module Accesslint
             | xargs -n1 accesslint \
             >> #{LOG_FILE}
         SHELL
+      end
+
+      def file_types_to_ignore
+        %w(
+          css
+          gif
+          ico
+          jpg
+          jpg
+          js
+          png
+          svg
+          txt
+          woff
+        ).join(",")
       end
     end
   end
