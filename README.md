@@ -43,5 +43,18 @@ test:
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+AccessLint CI is Copyright © 2016 thoughtbot, inc. It is free software, and may be
+redistributed under the terms specified by the [MIT License](http://opensource.org/licenses/MIT).
 
+## About thoughtbot
+
+![thoughtbot](https://thoughtbot.com/logo.png)
+
+AccessLint is maintained and funded by thoughtbot.
+
+We love open source software!
+See [our other projects][community] or
+[hire us][hire] to design, develop, and grow your product.
+
+[community]: https://thoughtbot.com/tools?utm_source=github+accesslint
+[hire]: https://thoughtbot.com/hire-us?utm_source=github+accesslint
