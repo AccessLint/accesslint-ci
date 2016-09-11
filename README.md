@@ -11,6 +11,8 @@ the pull request that initiated the build in CircleCI.
 
 ## Installation
 
+### Circle CI
+
 1. Set up your CircleCI environment (API tokens for CircleCI and GitHub, artifacts)
 1. Install dependencies (nodejs, `accesslint-cli`, `accesslint-ci`)
 1. Start a development server
@@ -40,6 +42,10 @@ test:
     - bundle exec rails server -d -p 3000
     - accesslint-ci scan http://localhost:3000
 ```
+
+### TravisCI, Jenkins, etc.
+
+AccessLint CI only works in CircleCI right now. See https://github.com/accesslint/accesslint-ci/issues/15
 
 ## License
 
