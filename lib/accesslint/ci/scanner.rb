@@ -62,7 +62,6 @@ module Accesslint
           gif
           ico
           jpg
-          jpg
           js
           png
           svg
