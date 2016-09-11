@@ -37,7 +37,7 @@ dependencies:
 
 test:
   post:
-    - bundle exec rails server
+    - bundle exec rails server -d -p 3000
     - accesslint-ci scan http://localhost:3000
 ```
 
