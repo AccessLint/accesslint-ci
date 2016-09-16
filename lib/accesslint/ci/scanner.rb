@@ -67,6 +67,7 @@ module Accesslint
           svg
           txt
           woff
+          zip
         ).join(",")
       end
     end
