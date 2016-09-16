@@ -21,9 +21,7 @@ module Accesslint
       private
 
       def artifact_url
-        @artifacts = JSON.parse(RestClient.get("#{artifacts_uri}?#{query}"))
-
-        artifact = @artifacts.first do |artifact|
+        artifact = artifacts.first do |artifact|
           artifact["path"].end_with?("accesslint.log")
         end
 
@@ -32,6 +30,12 @@ module Accesslint
         else
           raise MissingArtifactError.new("No existing logs for comparison.")
         end
+      end
+
+      def artifacts
+        @artifacts ||= JSON.parse(RestClient.get("#{artifacts_uri}?#{query}"))
+      rescue RestClient::NotFound
+        raise MissingArtifactError.new("No existing artifacts.")
       end
 
       def artifacts_uri
