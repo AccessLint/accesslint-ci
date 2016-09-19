@@ -32,7 +32,15 @@ module Accesslint
       end
 
       def auth
-        "accesslint-ci:#{ENV.fetch('ACCESSLINT_GITHUB_TOKEN')}"
+        "#{accesslint_commenter}:#{accesslint_github_token}"
+      end
+
+      def accesslint_commenter
+        ENV.fetch("ACCESSLINT_COMMENTER", "accesslint-ci")
+      end
+
+      def accesslint_github_token
+        ENV.fetch("ACCESSLINT_GITHUB_TOKEN")
       end
 
       def pull_request_number
