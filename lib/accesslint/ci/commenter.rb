@@ -3,79 +3,68 @@ require "rest-client"
 module Accesslint
   module Ci
     class Commenter
+      class CommenterError < StandardError; end
+
       def self.perform(*args)
         new(*args).perform
       end
 
-      def initialize(diff)
-        @diff = diff
+      def initialize(errors)
+        @errors = errors
       end
 
       def perform
-        RestClient.post(github_uri, payload)
+        RestClient.post(accesslint_service_url, payload)
+      rescue CommenterError => e
+        puts e.message
       end
 
       private
 
-      attr_reader :diff
+      attr_reader :errors
 
-      def github_uri
-        @github_uri ||= "#{github_host}/issues/#{pull_request_number}/comments"
+      def accesslint_service_url
+        @accesslint_service_url ||= URI(
+          File.join([
+            "https://#{authentication}@www.accesslint.com/api/v1/projects/",
+            project_path,
+            "pulls",
+            pull_request_number,
+            "comments",
+          ])
+        ).to_s
       end
 
-      def github_host
-        URI.join(
-          "https://#{auth}@api.github.com/",
-          "repos/",
-          project_path,
-        )
-      end
-
-      def auth
-        "accesslint-ci:#{ENV.fetch('ACCESSLINT_GITHUB_TOKEN')}"
+      def authentication
+        "#{github_account}:#{ENV.fetch('ACCESSLINT_API_TOKEN')}"
       end
 
       def pull_request_number
         if ENV["CI_PULL_REQUEST"]
           ENV.fetch("CI_PULL_REQUEST").match(/(\d+)/)[0]
         else
-          pull_requests[0].fetch("number")
+          raise CommenterError.new("Failed to comment: missing CI_PULL_REQUEST.")
         end
-      end
-
-      def pull_requests
-        @prs ||= JSON.parse(
-          RestClient.get(
-            "#{github_host}/pulls?head=#{pull_request_head}"
-          )
-        )
-      end
-
-      def pull_request_head
-        "#{ENV.fetch('CIRCLE_PROJECT_USERNAME')}:#{ENV.fetch('CIRCLE_BRANCH')}"
       end
 
       def payload
         {
-          body: message,
+          body: {
+            errors: errors
+          }
         }.to_json
       end
 
-      def message
-        "Found #{diff.count} new accessibility issues: \n```\n#{snippet}\n```"
-      end
-
-      def snippet
-        diff.join("\n")
+      def github_account
+        ENV.fetch("CIRCLE_PROJECT_USERNAME")
       end
 
       def project_path
         [
-          ENV.fetch("CIRCLE_PROJECT_USERNAME"),
+          github_account,
           ENV.fetch("CIRCLE_PROJECT_REPONAME"),
         ].join("/")
       end
     end
   end
 end
-

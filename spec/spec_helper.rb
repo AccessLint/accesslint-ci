@@ -1,3 +1,4 @@
+require 'climate_control'
 require 'dotenv'
 
 Dotenv.load(".env.test")

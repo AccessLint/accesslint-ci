@@ -33,7 +33,9 @@ module Accesslint
       end
 
       def artifacts
-        @artifacts ||= JSON.parse(RestClient.get("#{artifacts_uri}?#{query}"))
+        @artifacts ||= JSON.parse(
+          RestClient.get("#{artifacts_uri}?#{query}")
+        )
       rescue RestClient::NotFound
         raise MissingArtifactError.new("No existing artifacts.")
       end
