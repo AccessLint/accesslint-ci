@@ -17,7 +17,7 @@ module Accesslint
             and_return(existing)
 
           allow(Scanner).to receive(:perform).
-            with(host: host, options: {}).
+            with(host: host).
             and_return(latest)
 
           subject.scan(host)
@@ -43,7 +43,7 @@ module Accesslint
             and_return(existing)
 
           allow(Scanner).to receive(:perform).
-            with(host: host, options: {}).
+            with(host: host).
             and_return(latest)
 
           subject.scan(host)
@@ -68,7 +68,7 @@ module Accesslint
             and_return(existing)
 
           allow(Scanner).to receive(:perform).
-            with(host: host, options: {}).
+            with(host: host).
             and_return(latest)
 
           subject.scan(host)
@@ -88,7 +88,7 @@ module Accesslint
           allow(Commenter).to receive(:perform)
           allow(LogManager).to receive(:get)
           allow(Scanner).to receive(:perform).
-            with(host: host, options: {}).
+            with(host: host).
             and_return(latest)
 
           subject.scan(host)

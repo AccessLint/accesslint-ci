@@ -4,18 +4,23 @@ module Accesslint
   module Ci
     class Cli < Thor
       desc "scan HOST", "scan HOST"
-      option :crawl, type: :boolean
+      option :"skip-ci", type: :boolean
       def scan(host)
-        current = Scanner.perform(host: host, options: options).split("\n")
+        current = Scanner.perform(host: host).split("\n")
 
-        if ENV.fetch("CIRCLE_BRANCH") != "master"
-          existing = LogManager.get.split("\n")
-          diff = current - existing
+        if !options[:"skip-ci"]
+          if ENV.fetch("CIRCLE_BRANCH") != "master"
+            existing = LogManager.get.split("\n")
+            diff = current - existing
 
-          if diff.any?
-            Commenter.perform(diff)
+            if diff.any?
+              Commenter.perform(diff)
+            end
+
             puts diff
           end
+        else
+          puts current
         end
       end
     end

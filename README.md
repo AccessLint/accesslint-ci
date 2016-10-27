@@ -11,6 +11,11 @@ the pull request that initiated the build in CircleCI.
 
 ## Installation
 
+### Command line (without CircleCI and GitHub)
+
+1. gem install accesslint-ci
+1. accesslint-ci scan --skip-ci <url>
+
 ### Circle CI
 
 1. Set up your CircleCI environment (API tokens for CircleCI and GitHub, artifacts)
