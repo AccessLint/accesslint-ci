@@ -13,8 +13,8 @@ the pull request that initiated the build in CircleCI.
 
 ### Command line (without CircleCI and GitHub)
 
-1. gem install accesslint-ci
-1. accesslint-ci scan --skip-ci <url>
+1. `gem install accesslint-ci`
+1. `accesslint-ci scan --skip-ci <url>`
 
 ### Circle CI
 
