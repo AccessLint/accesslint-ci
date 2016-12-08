@@ -11,11 +11,7 @@ the pull request that initiated the build in CircleCI.
 
 ## Installation
 
-### Command line (without CircleCI and GitHub)
-
-1. `npm install -g accesslint-cli`
-1. `gem install accesslint-ci`
-1. `accesslint-ci scan --skip-ci <url>`
+1. Authenticate with GitHub at https://accesslint.com to get an API token.
 
 ### Circle CI
 
@@ -34,7 +30,8 @@ general:
 machine:
   environment:
     CIRCLE_TOKEN: <CircleCI API token>
-    ACCESSLINT_GITHUB_TOKEN: <GitHub Personal Access Token>
+    ACCESSLINT_TOKEN: <API token from https://accesslint.com>
+    ACCESSLINT_GITHUB_USER: <GitHub user authenticated at https://accesslint.com>
   node:
     version: 6.1.0
 
