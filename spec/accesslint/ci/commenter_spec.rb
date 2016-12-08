@@ -5,7 +5,7 @@ module Accesslint
     describe Commenter do
       it "sends a comment to the accesslint service" do
         pull_url = "https://github.com/accesslint/accesslint.com/pull/9001"
-        accesslint_service_url = "https://example-user:ABC456@www.accesslint.com/api/v1/projects/accesslint/accesslint-ci/pulls/9001/comments"
+        accesslint_service_url = "https://example-user:ABC456@accesslint.com/api/v1/projects/accesslint/accesslint-ci/pulls/9001/comments"
         errors = ["new error"]
         body = {
           body: { errors: errors }.to_json

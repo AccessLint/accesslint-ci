@@ -26,7 +26,7 @@ module Accesslint
       def accesslint_service_url
         @accesslint_service_url ||= URI(
           File.join([
-            "https://#{authentication}@www.accesslint.com/api/v1/projects/",
+            "https://#{authentication}@accesslint.com/api/v1/projects/",
             project_path,
             "pulls",
             pull_request_number,
