@@ -13,7 +13,7 @@ module Accesslint
         allow(RestClient).to receive(:get)
         allow(RestClient).to receive(:post)
 
-        ClimateControl.modify(CI_PULL_REQUEST: pull_url) do
+        ClimateControl.modify(CI_PULL_REQUESTS: pull_url) do
           Commenter.perform(errors)
         end
 

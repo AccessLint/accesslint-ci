@@ -40,10 +40,10 @@ module Accesslint
       end
 
       def pull_request_number
-        if ENV["CI_PULL_REQUEST"]
-          ENV.fetch("CI_PULL_REQUEST").match(/(\d+)/)[0]
+        if !ENV.fetch("CI_PULL_REQUESTS", "").empty?
+          ENV.fetch("CI_PULL_REQUESTS").match(/(\d+)/)[0]
         else
-          raise CommenterError.new("Failed to comment: missing CI_PULL_REQUEST.")
+          raise CommenterError.new("Failed to comment: missing CI_PULL_REQUESTS.")
         end
       end
 
