@@ -14,7 +14,7 @@ module Accesslint
       end
 
       def perform
-        RestClient.post(accesslint_service_url, payload)
+        RestClient.post(accesslint_service_url, body: payload)
       rescue CommenterError => e
         puts e.message
       end
@@ -48,11 +48,7 @@ module Accesslint
       end
 
       def payload
-        {
-          body: {
-            errors: errors
-          }
-        }.to_json
+        { errors: errors }.to_json
       end
 
       def github_account
