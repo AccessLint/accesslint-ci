@@ -36,7 +36,7 @@ module Accesslint
       end
 
       def authentication
-        "#{github_account}:#{ENV.fetch('ACCESSLINT_API_TOKEN')}"
+        "#{ENV.fetch('ACCESSLINT_GITHUB_USER')}:#{ENV.fetch('ACCESSLINT_API_TOKEN')}"
       end
 
       def pull_request_number
@@ -51,13 +51,13 @@ module Accesslint
         { errors: errors }.to_json
       end
 
-      def github_account
+      def github_user
         ENV.fetch("CIRCLE_PROJECT_USERNAME")
       end
 
       def project_path
         [
-          github_account,
+          github_user,
           ENV.fetch("CIRCLE_PROJECT_REPONAME"),
         ].join("/")
       end
