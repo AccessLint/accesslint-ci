@@ -15,7 +15,7 @@ module Accesslint
 
       def perform
         RestClient.post(accesslint_service_url, body: payload)
-      rescue CommenterError => e
+      rescue CommenterError, RestClient::ExceptionWithResponse => e
         puts e.message
       end
 
