@@ -36,14 +36,16 @@ module Accesslint
       end
 
       def authentication
-        "#{ENV.fetch('ACCESSLINT_GITHUB_USER')}:#{ENV.fetch('ACCESSLINT_API_TOKEN')}"
+        "#{github_user}:#{ENV.fetch('ACCESSLINT_API_TOKEN')}"
       end
 
       def pull_request_number
-        if !ENV.fetch("CI_PULL_REQUESTS", "").empty?
-          ENV.fetch("CI_PULL_REQUESTS").match(/(\d+)/)[0]
+        if !ENV.fetch("CI_PULL_REQUEST", "").empty?
+          ENV.fetch("CI_PULL_REQUEST").split("/").last
         else
-          raise CommenterError.new("Failed to comment: missing CI_PULL_REQUESTS.")
+          raise CommenterError.new(
+            "Failed to comment: CI_PULL_REQUEST is missing."
+          )
         end
       end
 
@@ -52,12 +54,12 @@ module Accesslint
       end
 
       def github_user
-        ENV.fetch("CIRCLE_PROJECT_USERNAME")
+        ENV.fetch("ACCESSLINT_GITHUB_USER")
       end
 
       def project_path
         [
-          github_user,
+          ENV.fetch("CIRCLE_PROJECT_USERNAME"),
           ENV.fetch("CIRCLE_PROJECT_REPONAME"),
         ].join("/")
       end
