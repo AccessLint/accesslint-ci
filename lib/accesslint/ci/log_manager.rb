@@ -10,9 +10,7 @@ module Accesslint
       end
 
       def get
-        RestClient.get(
-          "#{artifact_url}?circle-token=#{ENV.fetch('CIRCLE_TOKEN')}"
-        )
+        RestClient.get(artifact_url)
       rescue MissingArtifactError => e
         puts e.message
         "\n"
@@ -64,7 +62,6 @@ module Accesslint
         URI.encode_www_form([
           ["branch", branch],
           ["filter", "successful"],
-          ["circle-token", ENV.fetch("CIRCLE_TOKEN")],
         ])
       end
 

@@ -29,7 +29,6 @@ general:
 
 machine:
   environment:
-    CIRCLE_TOKEN: <CircleCI API token>
     ACCESSLINT_API_TOKEN: <API token from https://accesslint.com>
     ACCESSLINT_GITHUB_USER: <GitHub user authenticated at https://accesslint.com>
   node:
