@@ -34,19 +34,23 @@ module Accesslint
 
       def artifacts
         @artifacts ||= JSON.parse(
-          RestClient.get("#{artifacts_uri}?#{query}")
+          RestClient.get(artifacts_url)
         )
-      rescue RestClient::NotFound
-        raise MissingArtifactError.new("No existing artifacts.")
+      rescue RestClient::NotFound => e
+        raise MissingArtifactError.new(
+          "No existing artifacts at #{artifacts_url}: #{e.message}"
+        )
       end
 
-      def artifacts_uri
-        URI.join(
+      def artifacts_url
+        uri = URI.join(
           "https://circleci.com/",
           "api/v1/project/",
           project_path,
           "latest/artifacts",
         )
+
+        "#{uri}?#{query}"
       end
 
       def project_path
