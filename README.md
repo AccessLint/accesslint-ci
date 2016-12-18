@@ -46,6 +46,12 @@ test:
     - accesslint-ci scan http://localhost:3000
 ```
 
+### Private Repo Support
+
+AccessLint *does not* support commenting on private repos right now. Follow the
+[project backlog](https://github.com/accesslint/accesslint-ci/projects/1) for
+plans.
+
 ### TravisCI, Jenkins, etc.
 
 AccessLint CI only works in CircleCI right now. See https://github.com/accesslint/accesslint-ci/issues/15
