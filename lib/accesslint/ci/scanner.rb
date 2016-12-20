@@ -3,7 +3,6 @@ require "fileutils"
 
 module Accesslint
   module Ci
-    SITE_DIR = "tmp/accesslint-site".freeze
     LOG_FILE = "tmp/accesslint.log".freeze
 
     class Scanner
@@ -17,8 +16,8 @@ module Accesslint
       end
 
       def perform
-        create_site_dir
         create_log_file
+
         `#{crawl_site}`
 
         File.read(LOG_FILE)
@@ -28,13 +27,9 @@ module Accesslint
 
       attr_reader :host, :options
 
-      def create_site_dir
-        if !File.exists?(SITE_DIR)
-          FileUtils::mkdir_p(SITE_DIR)
-        end
-      end
-
       def create_log_file
+        FileUtils::mkdir_p("tmp")
+
         if File.exists?(LOG_FILE)
           FileUtils::rm(LOG_FILE)
         end
@@ -42,32 +37,27 @@ module Accesslint
 
       def crawl_site
         <<-SHELL
-          wget #{host} 2>&1 \
-            --spider \
+          (log_dir=$PWD && cd /tmp && wget #{host} 2>&1 \
+            --accept #{acceptable_file_types} \
+            --delete-after \
+            --no-directories \
             --recursive \
-            --reject #{file_types_to_ignore} \
             -erobots=off \
             | grep '^--' \
             | awk '{ print $3 }' \
+            | grep -v '.css' \
+            | grep -v '.txt' \
             | sort \
             | uniq \
             | xargs -n1 accesslint \
-            >> #{LOG_FILE}
+            >> $log_dir/#{LOG_FILE})
         SHELL
       end
 
-      def file_types_to_ignore
+      def acceptable_file_types
         %w(
           css
-          gif
-          ico
-          jpg
-          js
-          png
-          svg
-          txt
-          woff
-          zip
+          html
         ).join(",")
       end
     end
