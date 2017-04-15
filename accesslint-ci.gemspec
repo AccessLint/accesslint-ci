@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Cameron Cundiff"]
   spec.email         = ["hello@thoughtbot.com"]
 
-  spec.summary       = %q{Run accessibility tests in CircleCI builds}
-  spec.description   = %q{accesslint-ci runs accessibility tests in CircleCI and comments on corresponding GitHub pull requests}
+  spec.summary       = %q{Run accessibility tests in CI builds}
+  spec.description   = %q{accesslint-ci runs accessibility tests in CI and comments on corresponding GitHub pull requests}
   spec.homepage      = "https://www.github.com/accesslint/accesslint-ci"
   spec.license       = "MIT"
 

@@ -3,6 +3,31 @@ require "spec_helper"
 module Accesslint
   module Ci
     describe Cli do
+      context "when comparing to an existing log file" do
+        it "comments with the diff between the file and the new results" do
+          host = "https://example.com"
+          existing_error = "error"
+          new_error = "new error"
+          previous_log = "tmp/accesslint.diff"
+          new_log = "tmp/accesslint.2.log"
+          allow(Commenter).to receive(:perform)
+          allow(Scanner).to receive(:perform).and_return([existing_error, new_error].join("\n"))
+          allow(ReadAccesslintLog).to receive(:perform)
+            .with(previous_log).and_return([existing_error])
+          allow(File).to receive(:write).with(new_error)
+          allow(File).to receive(:open).with(previous_log, anything)
+
+          scanner = Accesslint::Ci::Cli.new(
+            [:scan],
+            { compare: previous_log, output: previous_log },
+          )
+
+          scanner.invoke(:scan, host)
+
+          expect(Commenter).to have_received(:perform).with([new_error])
+        end
+      end
+
       context "when there is a diff with new errors" do
         it "posts a comment with the diff" do
           original_branch = ENV["CIRCLE_BRANCH"]
@@ -19,6 +44,8 @@ module Accesslint
           allow(Scanner).to receive(:perform).
             with(host: host).
             and_return(latest)
+
+          allow(File).to receive(:open).with("tmp/accesslint.diff", anything)
 
           subject.scan(host)
 
