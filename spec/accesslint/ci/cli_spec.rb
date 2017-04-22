@@ -6,53 +6,32 @@ module Accesslint
       context "when comparing to an existing log file" do
         it "comments with the diff between the file and the new results" do
           host = "https://example.com"
+
           existing_error = "error"
           new_error = "new error"
-          previous_log = "tmp/accesslint.diff"
-          new_log = "tmp/accesslint.2.log"
+
+          baseline_log_file = "tmp/accesslint.log"
+          previous_diff_file = "tmp/accesslint.diff"
+
           allow(Commenter).to receive(:perform)
           allow(Scanner).to receive(:perform).and_return([existing_error, new_error].join("\n"))
+
           allow(ReadAccesslintLog).to receive(:perform)
-            .with(previous_log).and_return([existing_error])
-          allow(File).to receive(:write).with(new_error)
-          allow(File).to receive(:open).with(previous_log, anything)
+            .with(baseline_log_file).and_return([existing_error])
+          allow(ReadAccesslintLog).to receive(:perform)
+            .with(previous_diff_file).and_return([existing_error])
 
           scanner = Accesslint::Ci::Cli.new(
-            [:scan],
-            { compare: previous_log, output: previous_log },
+            [host],
+            {
+              compare: previous_diff_file,
+              base: baseline_log_file,
+            },
           )
 
-          scanner.invoke(:scan, host)
+          scanner.invoke(:scan)
 
           expect(Commenter).to have_received(:perform).with([new_error])
-        end
-      end
-
-      context "when there is a diff with new errors" do
-        it "posts a comment with the diff" do
-          original_branch = ENV["CIRCLE_BRANCH"]
-          ENV["CIRCLE_BRANCH"] = "my-branch"
-          host = "http://example.com"
-          existing = "an error\n"
-          latest = existing + "something new!\n"
-
-          allow(Commenter).to receive(:perform)
-
-          allow(LogManager).to receive(:get).
-            and_return(existing)
-
-          allow(Scanner).to receive(:perform).
-            with(host: host).
-            and_return(latest)
-
-          allow(File).to receive(:open).with("tmp/accesslint.diff", anything)
-
-          subject.scan(host)
-
-          expect(Commenter).to have_received(:perform).
-            with(["something new!"])
-
-          ENV["CIRCLE_BRANCH"] = original_branch
         end
       end
 
@@ -98,7 +77,9 @@ module Accesslint
             with(host: host).
             and_return(latest)
 
-          subject.scan(host)
+          scanner = Accesslint::Ci::Cli.new([host])
+
+          scanner.invoke(:scan)
 
           expect(Commenter).not_to have_received(:perform)
 

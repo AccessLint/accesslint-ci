@@ -19,13 +19,13 @@ Gem::Specification.new do |spec|
   spec.executables   = %w[accesslint-ci]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "climate_control", "~> 0.0.3"
-  spec.add_development_dependency "dotenv", "~> 2.1.1"
-  spec.add_development_dependency "pry-byebug", "~> 3.3.0"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "bundler", "~> 1.14"
+  spec.add_development_dependency "climate_control", "~> 0.1.0"
+  spec.add_development_dependency "dotenv", "~> 2.2.0"
+  spec.add_development_dependency "pry-byebug", "~> 3.4.2"
+  spec.add_development_dependency "rake", "~> 12.0.0"
+  spec.add_development_dependency "rspec", "~> 3.5.0"
 
-  spec.add_dependency "rest-client", "~> 2.0"
-  spec.add_dependency "thor", "~> 0.19"
+  spec.add_dependency "rest-client", "~> 2.0.1"
+  spec.add_dependency "thor", "~> 0.19.4"
 end
