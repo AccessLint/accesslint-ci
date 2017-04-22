@@ -7,32 +7,31 @@ module Accesslint
         it "comments with the diff between the file and the new results" do
           host = "https://example.com"
 
-          existing_error = "error"
-          new_error = "new error"
+          baseline = "http://localhost:123 | my error"
+          current = "http://localhost:456 | my error\nhttp://localhost:456 | new error"
 
           baseline_log_file = "tmp/accesslint.log"
           previous_diff_file = "tmp/accesslint.diff"
 
           allow(Commenter).to receive(:perform)
-          allow(Scanner).to receive(:perform).and_return([existing_error, new_error].join("\n"))
+          allow(Scanner).to receive(:perform).and_return(current)
 
           allow(ReadAccesslintLog).to receive(:perform)
-            .with(baseline_log_file).and_return([existing_error])
+            .with(baseline_log_file).and_return([baseline])
           allow(ReadAccesslintLog).to receive(:perform)
-            .with(previous_diff_file).and_return([existing_error])
+            .with(previous_diff_file).and_return([])
 
           scanner = Accesslint::Ci::Cli.new(
             [host],
             {
               compare: previous_diff_file,
-              outfile: baseline_log_file,
               base: baseline_log_file,
             },
           )
 
           scanner.invoke(:scan)
 
-          expect(Commenter).to have_received(:perform).with([new_error])
+          expect(Commenter).to have_received(:perform).with(["http://localhost | new error"])
         end
       end
 

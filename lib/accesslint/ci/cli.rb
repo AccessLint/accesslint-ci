@@ -38,11 +38,17 @@ module Accesslint
       end
 
       def new_diff
-        new_errors - existing_diff
+        normalize_host(errors: new_errors) - normalize_host(errors: existing_diff)
       end
 
       def new_errors
-        current_errors - baseline_errors
+        normalize_host(errors: current_errors) - normalize_host(errors: baseline_errors)
+      end
+
+      def normalize_host(errors:)
+        errors.map do |error|
+          error.gsub(/localhost:\d+/, "localhost")
+        end
       end
 
       def current_errors
