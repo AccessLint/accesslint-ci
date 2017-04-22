@@ -21,71 +21,71 @@ module Accesslint
         end
       end
 
-      no_commands do
-        attr_reader :host
+      private
 
-        def skip_ci?
-          options[:"skip-ci"]
-        end
+      attr_reader :host
 
-        def pr?
-          ENV.fetch("CIRCLE_BRANCH") != "master"
-        end
+      def skip_ci?
+        options[:"skip-ci"]
+      end
 
-        def changes?
-          new_diff.any?
-        end
+      def pr?
+        ENV.fetch("CIRCLE_BRANCH") != "master"
+      end
 
-        def new_diff
-          new_errors - existing_diff
-        end
+      def changes?
+        new_diff.any?
+      end
 
-        def new_errors
-          current_errors - baseline_errors
-        end
+      def new_diff
+        new_errors - existing_diff
+      end
 
-        def current_errors
-          @current_errors ||= Scanner.perform(host: host).split("\n")
-        end
+      def new_errors
+        current_errors - baseline_errors
+      end
 
-        def baseline_errors
-          if baseline_file
-            @baseline_errors ||= ReadAccesslintLog.perform(baseline_file)
-          else
-            []
-          end
-        end
+      def current_errors
+        @current_errors ||= Scanner.perform(host: host).split("\n")
+      end
 
-        def baseline_file
-          options[:base]
+      def baseline_errors
+        if baseline_file
+          @baseline_errors ||= ReadAccesslintLog.perform(baseline_file)
+        else
+          []
         end
+      end
 
-        def existing_diff
-          if previous_diff_file
-            @existing_diff ||= ReadAccesslintLog.perform(previous_diff_file)
-          else
-            @existing_diff ||= LogManager.get.split("\n")
-          end
-        end
+      def baseline_file
+        options[:base]
+      end
 
-        def previous_diff_file
-          options[:compare]
+      def existing_diff
+        if previous_diff_file
+          @existing_diff ||= ReadAccesslintLog.perform(previous_diff_file)
+        else
+          @existing_diff ||= LogManager.get.split("\n")
         end
+      end
 
-        def save_diff
-          WriteAccesslintLog.perform(
-            file_name: new_diff_file,
-            contents: new_diff.join("\n"),
-          )
-        end
+      def previous_diff_file
+        options[:compare]
+      end
 
-        def new_diff_file
-          options[:outfile] || previous_diff_file
-        end
+      def save_diff
+        WriteAccesslintLog.perform(
+          file_name: new_diff_file,
+          contents: new_diff.join("\n"),
+        )
+      end
 
-        def post_comment
-          Commenter.perform(new_diff)
-        end
+      def new_diff_file
+        options[:outfile] || previous_diff_file
+      end
+
+      def post_comment
+        Commenter.perform(new_diff)
       end
     end
 
