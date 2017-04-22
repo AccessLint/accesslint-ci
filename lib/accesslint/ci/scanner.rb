@@ -49,7 +49,7 @@ module Accesslint
             | grep -v '.txt' \
             | sort \
             | uniq \
-            | xargs -n1 accesslint \
+            | xargs -n1 -P10 -t accesslint \
             >> $log_dir/#{LOG_FILE})
         SHELL
       end
