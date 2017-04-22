@@ -25,6 +25,7 @@ module Accesslint
             [host],
             {
               compare: previous_diff_file,
+              outfile: baseline_log_file,
               base: baseline_log_file,
             },
           )

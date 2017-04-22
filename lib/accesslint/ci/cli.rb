@@ -4,10 +4,11 @@ module Accesslint
   module Ci
     class Cli < Thor
       desc "scan HOST", "scan HOST"
-      option :"skip-ci", type: :boolean
-      option :"hosted", type: :boolean
+      option :"base", type: :string
       option :"compare", type: :string
+      option :"hosted", type: :boolean
       option :"outfile", type: :string
+      option :"skip-ci", type: :boolean
       def scan(host)
         @host = host
 
