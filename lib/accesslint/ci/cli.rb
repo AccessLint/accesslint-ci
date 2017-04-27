@@ -12,11 +12,11 @@ module Accesslint
       def scan(host)
         @host = host
 
+        save_diff
+
         if skip_ci?
           puts current_errors
-          return
         elsif pr? && changes?
-          save_diff
           post_comment
         end
       end
@@ -70,13 +70,19 @@ module Accesslint
       def existing_diff
         if previous_diff_file
           @existing_diff ||= ReadAccesslintLog.perform(previous_diff_file)
-        else
+        elsif circle_ci? && pr?
           @existing_diff ||= LogManager.get.split("\n")
+        else
+          []
         end
       end
 
       def previous_diff_file
         options[:compare]
+      end
+
+      def circle_ci?
+        !skip_ci?
       end
 
       def save_diff
@@ -87,7 +93,7 @@ module Accesslint
       end
 
       def new_diff_file
-        options[:outfile] || previous_diff_file
+        options[:outfile] || previous_diff_file || "accesslint.diff"
       end
 
       def post_comment
@@ -107,10 +113,8 @@ module Accesslint
 
     class WriteAccesslintLog
       def self.perform(file_name:, contents:)
-        if File.exist?(file_name)
-          File.open(file_name, "w") do |file|
-            file.write(contents)
-          end
+        File.open(file_name, "w") do |file|
+          file.write(contents)
         end
       end
     end

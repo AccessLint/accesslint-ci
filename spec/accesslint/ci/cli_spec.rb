@@ -99,7 +99,9 @@ module Accesslint
             with(host: host).
             and_return(latest)
 
-          subject.scan(host)
+          scanner = Accesslint::Ci::Cli.new([host])
+
+          scanner.invoke(:scan)
 
           expect(LogManager).not_to have_received(:get)
           expect(Commenter).not_to have_received(:perform)
