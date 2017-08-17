@@ -1,4 +1,10 @@
+# Deprecated
+
+Use the AccessLint [GitHub integration](https://github.com/apps/accesslint).
+
 # Accesslint::Ci
+
+https://robots.thoughtbot.com/introducing-accesslint-web-accessibility-testing-in-ci
 
 Runs accesslint-cli in CircleCI and comments on GitHub pull requests with new
 accessibility issues.
