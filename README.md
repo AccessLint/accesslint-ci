@@ -1,6 +1,6 @@
 # Deprecated
 
-Use the AccessLint [GitHub integration](https://github.com/apps/accesslint).
+Use the AccessLint [GitHub integration](https://github.com/apps/accesslint) or check out [axe-cli](https://github.com/dequelabs/axe-cli) for development testing.
 
 # Accesslint::Ci
 
